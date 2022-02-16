@@ -1,19 +1,22 @@
-import firebase from "firebase";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBf1Kw49vRPnBLMABBqWT_LIXLfohfjxpc",
-  authDomain: "whatsapp-clone-9ae96.firebaseapp.com",
-  projectId: "whatsapp-clone-9ae96",
-  storageBucket: "whatsapp-clone-9ae96.appspot.com",
-  messagingSenderId: "845724915590",
-  appId: "1:845724915590:web:b46e9b9f0b10c082bc3e07",
-  measurementId: "G-NG43TESEBL",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 const db = app.firestore();
-const googleProvider = new firebase.auth.GithubAuthProvider();
+const auth = getAuth();
+const googleProvider = new GoogleAuthProvider();
 
 export { auth, googleProvider };
 export default db;

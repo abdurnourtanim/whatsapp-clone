@@ -1,3 +1,4 @@
+import { signInWithPopup } from "firebase/auth";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import googleLogo from "../assets/google-logo.png";
@@ -9,21 +10,20 @@ const Login = ({ setUser }) => {
   const navigate = useNavigate();
 
   const signInWithGoogle = () => {
-    auth
-      .signInWithPopup(googleProvider)
+    signInWithPopup(auth, googleProvider)
       .then((res) => {
         const newUser = {
           userName: res.user.displayName,
-          email: res.user.email,
           photoURL: res.user.photoURL,
+          email: res.user.email,
         };
         navigate("/");
         setUser(newUser);
-        console.log("then");
-
-        db.collection("user").doc(res.user.email).set(newUser);
+        db.collection("user").doc(res.user.uid).set(newUser);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
