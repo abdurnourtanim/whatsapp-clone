@@ -3,16 +3,16 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
 import TollIcon from "@material-ui/icons/Toll";
 import React from "react";
-import { default as userImg, default as userLogo } from "../assets/user.png";
+import userImg from "../assets/user.png";
 import "../styles/Sidebar.css";
 import Profile from "./Profile";
 
-const Sidebar = () => {
+const Sidebar = ({ currentUser, logout }) => {
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <div className="sidebar__header__img">
-          <img src={userLogo} alt="user" />
+        <div className="sidebar__header__img" onClick={logout}>
+          <img src={currentUser?.photoURL} alt="user" />
         </div>
         <div className=" sidebar__header__btn">
           <TollIcon />

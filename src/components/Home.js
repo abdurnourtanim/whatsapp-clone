@@ -3,11 +3,11 @@ import logo from "../assets/logo.png";
 import "../styles/Home.css";
 import Sidebar from "./Sidebar";
 
-const Home = () => {
+const Home = ({ currentUser, logout }) => {
   return (
     <div className="home">
       <div className="home__container">
-        <Sidebar />
+        <Sidebar currentUser={currentUser} logout={logout} />
         <div className="home__bg">
           <img src={logo} alt="logo" />
         </div>
