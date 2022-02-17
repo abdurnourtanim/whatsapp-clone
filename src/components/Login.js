@@ -20,7 +20,7 @@ const Login = ({ setUser }) => {
         navigate("/");
         setUser(newUser);
         localStorage.setItem("user", JSON.stringify(newUser));
-        db.collection("user").doc(res.user.email).set(newUser);
+        db.collection("users").doc(res.user.email).set(newUser);
       })
       .catch((err) => {
         console.log(err);
