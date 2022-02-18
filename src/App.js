@@ -9,7 +9,7 @@ const App = () => {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(localUser);
 
-  const logout = async () => {
+  const logOut = async () => {
     const auth = getAuth();
     try {
       await signOut(auth);
@@ -26,9 +26,12 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={<Home currentUser={user} logout={logout} />}
+            element={<Home currentUser={user} logOut={logOut} />}
           />
-          <Route path="/chat" element={<Chat />} />
+          <Route
+            path="/:emailID"
+            element={<Chat currentUser={user} logOut={logOut} />}
+          />
         </Routes>
       ) : (
         <Login setUser={setUser} />

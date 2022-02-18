@@ -8,7 +8,7 @@ import db from "../firebase";
 import "../styles/Sidebar.css";
 import Profile from "./Profile";
 
-const Sidebar = ({ currentUser, logout }) => {
+const Sidebar = ({ currentUser, logOut }) => {
   const [allUser, setAllUser] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
@@ -16,7 +16,7 @@ const Sidebar = ({ currentUser, logout }) => {
     const getAllUser = async () => {
       const data = db.collection("users").onSnapshot((snapshot) => {
         setAllUser(
-          snapshot.docs.filter((doc) => doc.data.email !== currentUser.email)
+          snapshot.docs.filter((doc) => doc.data.email !== currentUser?.email)
         );
       });
       return data;
@@ -48,7 +48,7 @@ const Sidebar = ({ currentUser, logout }) => {
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <div className="sidebar__header__img" onClick={logout}>
+        <div className="sidebar__header__img" onClick={logOut}>
           <img src={currentUser?.photoURL} alt="user" />
         </div>
         <div className=" sidebar__header__btn">
@@ -75,11 +75,7 @@ const Sidebar = ({ currentUser, logout }) => {
         {searchItem.length > 0 ? (
           searchItem
         ) : (
-          <Profile
-            name="Jone Doe"
-            photoURL={userImg}
-            lastMessage="Hello World!"
-          />
+          <Profile name="Jone Doe" photoURL={userImg} />
         )}
       </div>
     </div>

@@ -1,15 +1,14 @@
 import React from "react";
 import "../styles/Chat.css";
-import Chatcontainer from "./Chatcontainer";
+import ChatContainer from "./ChatContainer";
 import Sidebar from "./Sidebar";
 
-const Chat = () => {
+const Chat = ({ currentUser, logOut }) => {
   return (
     <div className="chat">
       <div className="chat__container">
-        <Sidebar />
-
-        <Chatcontainer />
+        <Sidebar currentUser={currentUser} logOut={logOut} />
+        <ChatContainer currentUser={currentUser} />
       </div>
     </div>
   );
