@@ -14,6 +14,7 @@ const ChatContainer = ({ currentUser }) => {
   const [message, setMessage] = useState("");
   const [openEmoji, setOpenEmoji] = useState(false);
   const [chatUser, setChatUser] = useState({});
+  const [chatMessages, setChatMessages] = useState([]);
   const { emailID } = useParams();
   const { userName, photoURL } = chatUser;
 
@@ -28,8 +29,27 @@ const ChatContainer = ({ currentUser }) => {
       return data;
     };
 
+    const getMessages = async () => {
+      const data = await db
+        .collection("chats")
+        .doc(emailID)
+        .collection("messages")
+        .orderBy("timeStamp", "asc")
+        .onSnapshot((snapshot) => {
+          const messages = snapshot.docs.map((doc) => doc.data());
+          const newMessages = messages.filter(
+            (message) =>
+              message.senderEmail === (currentUser.email || emailID) ||
+              message.receiverEmail === (currentUser.email || emailID)
+          );
+          setChatMessages(newMessages);
+        });
+      return data;
+    };
+
     getUser();
-  }, [emailID]);
+    getMessages();
+  }, [emailID, currentUser]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -98,10 +118,14 @@ const ChatContainer = ({ currentUser }) => {
       </div>
 
       <div className="chat-display-container">
-        <ChatMessage
-          message="Hello,This is a test message!"
-          time="22-02-2022"
-        />
+        {chatMessages.map((message) => (
+          <ChatMessage
+            key={message.message}
+            message={message.message}
+            time={message.timeStamp}
+            sender={message.senderEmail}
+          />
+        ))}
       </div>
       <div className="chat-input">
         {openEmoji && (
