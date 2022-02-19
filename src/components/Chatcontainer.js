@@ -4,7 +4,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SendIcon from "@material-ui/icons/Send";
 import Picker from "emoji-picker-react";
 import firebase from "firebase/compat/app";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import db from "../firebase";
 import "../styles/Chatcontainer.css";
@@ -17,6 +17,7 @@ const ChatContainer = ({ currentUser }) => {
   const [chatMessages, setChatMessages] = useState([]);
   const { emailID } = useParams();
   const { userName, photoURL } = chatUser;
+  const chatBox = useRef(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -50,6 +51,16 @@ const ChatContainer = ({ currentUser }) => {
     getUser();
     getMessages();
   }, [emailID, currentUser]);
+
+  useEffect(() => {
+    chatBox.current.addEventListener("DOMNodeInserted", (e) => {
+      const { currentTarget } = e;
+      currentTarget.scroll({
+        top: currentTarget.scrollHeight,
+        behavior: "smooth",
+      });
+    });
+  }, [message]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -117,7 +128,7 @@ const ChatContainer = ({ currentUser }) => {
         </div>
       </div>
 
-      <div className="chat-display-container">
+      <div className="chat-display-container" ref={chatBox}>
         {chatMessages.map((message) => (
           <ChatMessage
             key={message.message}

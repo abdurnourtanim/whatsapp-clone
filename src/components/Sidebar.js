@@ -11,17 +11,30 @@ import Profile from "./Profile";
 const Sidebar = ({ currentUser, logOut }) => {
   const [allUser, setAllUser] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [friendsList, setFriendsList] = useState([]);
 
   useEffect(() => {
     const getAllUser = async () => {
-      const data = db.collection("users").onSnapshot((snapshot) => {
+      const data = await db.collection("users").onSnapshot((snapshot) => {
         setAllUser(
           snapshot.docs.filter((doc) => doc.data.email !== currentUser?.email)
         );
       });
       return data;
     };
+
+    const getFriends = async () => {
+      await db
+        .collection("friendList")
+        .doc(currentUser.email)
+        .collection("list")
+        .onSnapshot((snapshot) => {
+          setFriendsList(snapshot.docs);
+        });
+    };
+
     getAllUser();
+    getFriends();
   }, [currentUser]);
 
   // eslint-disable-next-line array-callback-return
@@ -72,11 +85,20 @@ const Sidebar = ({ currentUser, logOut }) => {
       </div>
 
       <div className="sidebar__chat__list">
-        {searchItem.length > 0 ? (
-          searchItem
-        ) : (
-          <Profile name="Jone Doe" photoURL={userImg} />
-        )}
+        {searchItem.length > 0
+          ? searchItem
+          : friendsList.map((friends) => {
+              const { email, userName, photoURL, message } = friends?.data();
+              return (
+                <Profile
+                  key={email}
+                  name={userName || undefined}
+                  photoURL={photoURL || userImg}
+                  lastMessage={message || null}
+                  email={email}
+                />
+              );
+            })}
       </div>
     </div>
   );

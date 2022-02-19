@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
 
-const Profile = ({ name, photoURL, email }) => {
+const Profile = ({ name, photoURL, email, lastMessage }) => {
   const navigate = useNavigate();
   const goToUser = (emailID) => {
     if (emailID) {
@@ -18,7 +18,7 @@ const Profile = ({ name, photoURL, email }) => {
 
       <div className="user__info">
         <p className="user__name">{name}</p>
-        <p className="user__lastmessage">Hello,This is test message!</p>
+        <p className="user__lastmessage">{lastMessage}</p>
       </div>
     </div>
   );
