@@ -6,6 +6,7 @@ import Picker from "emoji-picker-react";
 import firebase from "firebase/compat/app";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import userImg from "../assets/user.png";
 import db from "../firebase";
 import "../styles/Chatcontainer.css";
 import ChatMessage from "./ChatMessage";
@@ -16,7 +17,7 @@ const ChatContainer = ({ currentUser }) => {
   const [chatUser, setChatUser] = useState({});
   const [chatMessages, setChatMessages] = useState([]);
   const { emailID } = useParams();
-  const { userName, photoURL } = chatUser;
+
   const chatBox = useRef(null);
 
   useEffect(() => {
@@ -118,9 +119,9 @@ const ChatContainer = ({ currentUser }) => {
       <div className="chat-container-header">
         <div className="chat-user-info">
           <div className="chat-user-img">
-            <img src={photoURL} alt="user-img" />
+            <img src={chatUser?.photoURL || userImg} alt="user-img" />
           </div>
-          <p>{userName}</p>
+          <p>{chatUser?.userName || "undefined"}</p>
         </div>
 
         <div className="chat-container-header-btn">
@@ -141,7 +142,7 @@ const ChatContainer = ({ currentUser }) => {
       <div className="chat-input">
         {openEmoji && (
           <Picker
-            onEmojiClick={(event, emojiObject) =>
+            onEmojiClick={(e, emojiObject) =>
               setMessage(message + emojiObject.emoji)
             }
             lick
